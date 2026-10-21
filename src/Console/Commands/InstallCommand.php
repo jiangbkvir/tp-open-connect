@@ -27,7 +27,7 @@ class InstallCommand extends Command
 
         $this->info('管理界面访问方式：');
         $this->info('  - 后台菜单：System → TP Open Connect');
-        $this->info('  - 对接说明：/nexusphp/tp-open-connect/integration-guide');
+        $this->info('  - 对接说明：/nexusphp/tp-open-connect-integration-guide');
         $this->newLine();
 
         $this->info('API 接口：');

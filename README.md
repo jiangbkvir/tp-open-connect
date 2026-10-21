@@ -121,7 +121,7 @@ php artisan db:table api_operation_logs
 
 管理后台入口：`/nexusphp/tp-open-connect`
 
-对接方案入口：`/nexusphp/tp-open-connect/integration-guide`
+对接方案入口：`/nexusphp/tp-open-connect-integration-guide`
 
 ## 卸载
 
@@ -219,7 +219,7 @@ $response = Http::withHeaders([
 $userData = $response->json()['data'];
 ```
 
-完整的对接指南请访问 `/nexusphp/tp-open-connect/integration-guide`。
+完整的对接指南请访问 `/nexusphp/tp-open-connect-integration-guide`。
 
 ## API 接口
 
@@ -255,7 +255,7 @@ $signature = hash_hmac('sha256', $payload, $appSecret);
 |---|---|---|
 | `/tp-open-connect/sso/generate` | POST | 生成 SSO 跳转 URL |
 | `/tp-open-connect/sso/generate?app_id=...` | GET | 登录后直接跳转到第三方接入应用 |
-| `/nexusphp/tp-open-connect/integration-guide` | GET | 对接方案文档页面 |
+| `/nexusphp/tp-open-connect-integration-guide` | GET | 对接方案文档页面 |
 
 ## 安全机制
 
@@ -310,7 +310,7 @@ $signature = hash_hmac('sha256', $payload, $appSecret);
 
 - [INTEGRATION.md](INTEGRATION.md) - 第三方应用对接教程
 - [TESTING.md](TESTING.md) - 测试说明
-- `/nexusphp/tp-open-connect/integration-guide` - 第三方接入应用对接完整指南
+- `/nexusphp/tp-open-connect-integration-guide` - 第三方接入应用对接完整指南
 
 ## 升级
 

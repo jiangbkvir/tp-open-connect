@@ -4,7 +4,6 @@ namespace NexusPlugin\TpOpenConnect\Filament;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use NexusPlugin\TpOpenConnect\Filament\Pages\IntegrationGuide;
 use NexusPlugin\TpOpenConnect\Filament\Pages\TpOpenConnectManagement;
 use NexusPlugin\TpOpenConnect\Filament\Resources\ApiAppResource;
 use NexusPlugin\TpOpenConnect\Filament\Resources\ApiAssetLogResource;
@@ -25,7 +24,6 @@ class TpOpenConnectPlugin implements Plugin
             ])
             ->pages([
                 TpOpenConnectManagement::class,
-                IntegrationGuide::class,
             ]);
     }
 

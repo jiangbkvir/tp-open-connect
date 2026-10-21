@@ -51,14 +51,6 @@
             </div>
         </div>
 
-        <!-- 创建表单 -->
-        {{ $this->form }}
-
-        <!-- 第三方接入应用列表 -->
-        <div class="mt-6">
-            {{ $this->table }}
-        </div>
-
         <!-- 使用说明 -->
         <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 mt-6">
             <h3 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-3">

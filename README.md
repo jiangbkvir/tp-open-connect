@@ -4,7 +4,22 @@
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D8.2-8892BF.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-10%2F11%2F12-FF2D20.svg)](https://laravel.com/)
-[![Filament](https://img.shields.io/badge/Filament-3.x-FBBC04.svg)](https://filamentphp.com/)
+[![Filament](https://img.shields.io/badge/Filament-5.x-FBBC04.svg)](https://filamentphp.com/)
+
+> **分支说明**
+>
+> | 分支 | Filament | 适用 NexusPHP |
+> |---|---|---|
+> | `main` | 3.x | 1.8 / 1.9 |
+> | **`v5`（当前分支）** | **5.x**（Livewire 4） | **1.10 及以上** |
+>
+> `v5` 分支只是把后台 UI 适配到 Filament 5 / Livewire 4，**接口契约、HMAC 签名、权限模型、
+> 数据库迁移与资产交易逻辑与 `main` 完全一致**，两者可互相切换而不影响已有数据。
+>
+> 在 Filament 5 站点上，原 `main` 分支的代码无法运行：`Filament\Forms\Form`、
+> `Filament\Forms\Components\Section|Grid`、`Filament\Tables\Actions\*`、
+> `Livewire\Mechanisms\ComponentRegistry` 均已不存在，且 `Resource::form()` 的签名、
+> `Page::$view`（v5 为实例属性）与导航属性类型都发生了变化。
 
 NexusPHP 主站开放连接插件，为第三方接入应用提供 SSO 单点登录、用户信息查询和资产交易能力。
 

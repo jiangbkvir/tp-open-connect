@@ -15,7 +15,7 @@ class TpOpenConnectManagement extends Page
     protected static ?string $slug = 'system/tp-open-connect-management';
     protected static ?string $navigationLabel = 'TP Open Connect';
     protected static ?string $title = 'TP Open Connect';
-    protected static ?string $navigationIcon = 'heroicon-o-link';
-    protected static ?string $navigationGroup = 'System';
-    protected static string $view = 'tp-open-connect::filament.pages.management';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-link';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
+    protected string $view = 'tp-open-connect::filament.pages.management';
 }

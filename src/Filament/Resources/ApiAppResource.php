@@ -3,14 +3,28 @@
 namespace NexusPlugin\TpOpenConnect\Filament\Resources;
 
 use App\Models\User;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use NexusPlugin\TpOpenConnect\Filament\Resources\ApiAppResource\Pages;
 use NexusPlugin\TpOpenConnect\Models\ApiApp;
-use Illuminate\Support\Str;
 
 class ApiAppResource extends Resource
 {
@@ -21,9 +35,9 @@ class ApiAppResource extends Resource
 
     protected static ?string $model = ApiApp::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-key';
 
-    protected static ?string $navigationGroup = 'System';
+    protected static string|\UnitEnum|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 120;
 
@@ -35,19 +49,19 @@ class ApiAppResource extends Resource
 
     protected static ?string $slug = 'tp-open-connect';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
-                Forms\Components\Section::make('基本信息')
+                Section::make('基本信息')
                     ->schema([
-                        Forms\Components\Grid::make(2)
+                        Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('app_name')
+                                TextInput::make('app_name')
                                     ->label('接入应用名称')
                                     ->required()
                                     ->placeholder('例如：移动端应用'),
-                                Forms\Components\Select::make('status')
+                                Select::make('status')
                                     ->label('状态')
                                     ->options([
                                         1 => '启用',
@@ -56,33 +70,33 @@ class ApiAppResource extends Resource
                                     ->default(1)
                                     ->required(),
                             ]),
-                        Forms\Components\Toggle::make('sso_verify')
+                        Toggle::make('sso_verify')
                             ->label('启用 SSO 验证')
                             ->helperText('允许第三方接入应用进行 SSO 用户验证')
                             ->default(true)
                             ->onColor('success')
-                            ->afterStateHydrated(function (Forms\Components\Toggle $component, $state, $record) {
+                            ->afterStateHydrated(function (Toggle $component, $state, $record) {
                                 if ($record) {
                                     $rules = $record->asset_rules ?? [];
                                     $component->state($rules['sso_verify'] ?? false);
                                 }
                             }),
-                        Forms\Components\Toggle::make('verify_origin')
+                        Toggle::make('verify_origin')
                             ->label('校验请求来源')
                             ->helperText('启用后 API 请求将验证 Origin/Referer 是否在白名单中（生产环境建议开启，开发测试建议关闭）')
                             ->default(false) // 默认关闭，方便开发测试
                             ->onColor('success')
                             ->offColor('gray')
-                            ->afterStateHydrated(function (Forms\Components\Toggle $component, $state, $record) {
+                            ->afterStateHydrated(function (Toggle $component, $state, $record) {
                                 if ($record) {
                                     $component->state($record->verify_origin ?? false);
                                 }
                             }),
-                        Forms\Components\TagsInput::make('redirect_uris')
+                        TagsInput::make('redirect_uris')
                             ->label('回调域名白名单')
                             ->helperText('每个域名一行，例如：https://site.example.com（启用"校验请求来源"后生效）')
                             ->placeholder('输入域名后按回车添加')
-                            ->afterStateHydrated(function (Forms\Components\TagsInput $component, $state, $record) {
+                            ->afterStateHydrated(function (TagsInput $component, $state, $record) {
                                 if ($record) {
                                     $uris = $record->redirect_uris ?? [];
                                     $component->state($uris);
@@ -90,134 +104,134 @@ class ApiAppResource extends Resource
                             }),
                     ]),
 
-                Forms\Components\Section::make('资产权限配置')
+                Section::make('资产权限配置')
                     ->schema([
-                        Forms\Components\Grid::make(4)
+                        Grid::make(4)
                             ->schema([
-                                Forms\Components\Placeholder::make('asset_type_header')
+                                Placeholder::make('asset_type_header')
                                     ->label('资产类型')
                                     ->content(''),
-                                Forms\Components\Placeholder::make('query_header')
+                                Placeholder::make('query_header')
                                     ->label('查询'),
-                                Forms\Components\Placeholder::make('deduct_header')
+                                Placeholder::make('deduct_header')
                                     ->label('扣减'),
-                                Forms\Components\Placeholder::make('increase_header')
+                                Placeholder::make('increase_header')
                                     ->label('增加'),
                             ]),
-                        Forms\Components\Grid::make(4)
+                        Grid::make(4)
                             ->schema([
-                                Forms\Components\Placeholder::make('upload_label')
+                                Placeholder::make('upload_label')
                                     ->label('上传量')
                                     ->content(''),
-                                Forms\Components\Checkbox::make('upload_query')
+                                Checkbox::make('upload_query')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['upload']['query'] ?? false);
                                         }
                                     }),
-                                Forms\Components\Checkbox::make('upload_deduct')
+                                Checkbox::make('upload_deduct')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['upload']['deduct'] ?? false);
                                         }
                                     }),
-                                Forms\Components\Checkbox::make('upload_increase')
+                                Checkbox::make('upload_increase')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['upload']['increase'] ?? false);
                                         }
                                     }),
                             ]),
-                        Forms\Components\Grid::make(4)
+                        Grid::make(4)
                             ->schema([
-                                Forms\Components\Placeholder::make('download_label')
+                                Placeholder::make('download_label')
                                     ->label('下载量')
                                     ->content(''),
-                                Forms\Components\Checkbox::make('download_query')
+                                Checkbox::make('download_query')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['download']['query'] ?? false);
                                         }
                                     }),
-                                Forms\Components\Checkbox::make('download_deduct')
+                                Checkbox::make('download_deduct')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['download']['deduct'] ?? false);
                                         }
                                     }),
-                                Forms\Components\Checkbox::make('download_increase')
+                                Checkbox::make('download_increase')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['download']['increase'] ?? false);
                                         }
                                     }),
                             ]),
-                        Forms\Components\Grid::make(4)
+                        Grid::make(4)
                             ->schema([
-                                Forms\Components\Placeholder::make('bonus_label')
+                                Placeholder::make('bonus_label')
                                     ->label('魔力值')
                                     ->content(''),
-                                Forms\Components\Checkbox::make('bonus_query')
+                                Checkbox::make('bonus_query')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['bonus']['query'] ?? false);
                                         }
                                     }),
-                                Forms\Components\Checkbox::make('bonus_deduct')
+                                Checkbox::make('bonus_deduct')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['bonus']['deduct'] ?? false);
                                         }
                                     }),
-                                Forms\Components\Checkbox::make('bonus_increase')
+                                Checkbox::make('bonus_increase')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['bonus']['increase'] ?? false);
                                         }
                                     }),
                             ]),
-                        Forms\Components\Grid::make(4)
+                        Grid::make(4)
                             ->schema([
-                                Forms\Components\Placeholder::make('signin_card_label')
+                                Placeholder::make('signin_card_label')
                                     ->label('签到卡')
                                     ->content(''),
-                                Forms\Components\Checkbox::make('signin_card_query')
+                                Checkbox::make('signin_card_query')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['signin_card']['query'] ?? false);
                                         }
                                     }),
-                                Forms\Components\Checkbox::make('signin_card_deduct')
+                                Checkbox::make('signin_card_deduct')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['signin_card']['deduct'] ?? false);
                                         }
                                     }),
-                                Forms\Components\Checkbox::make('signin_card_increase')
+                                Checkbox::make('signin_card_increase')
                                     ->label('')
-                                    ->afterStateHydrated(function (Forms\Components\Checkbox $component, $state, $record) {
+                                    ->afterStateHydrated(function (Checkbox $component, $state, $record) {
                                         if ($record) {
                                             $rules = $record->asset_rules ?? [];
                                             $component->state($rules['asset_rules']['signin_card']['increase'] ?? false);
@@ -232,44 +246,47 @@ class ApiAppResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->label('ID')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('app_id')
-                                    ->label('接入应用 ID')
+                TextColumn::make('app_id')
+                    ->label('接入应用 ID')
                     ->copyable()
                     ->copyMessage('App ID 已复制')
                     ->fontFamily('mono')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('app_name')
+                TextColumn::make('app_name')
                     ->label('名称')
                     ->searchable(),
-                Tables\Columns\BadgeColumn::make('status')
+                TextColumn::make('status')
                     ->label('状态')
-                    ->formatStateUsing(fn (int $state): string => $state ? '启用' : '禁用')
+                    ->badge()
+                    ->formatStateUsing(fn ($state): string => $state ? '启用' : '禁用')
                     ->colors([
                         'success' => 1,
                         'danger' => 0,
                     ]),
-                Tables\Columns\BadgeColumn::make('sso_verify')
+                TextColumn::make('sso_verify')
                     ->label('SSO')
-                    ->formatStateUsing(fn ($record): string => ($record->asset_rules['sso_verify'] ?? false) ? '是' : '否')
+                    ->badge()
+                    ->formatStateUsing(fn (ApiApp $record): string => ($record->asset_rules['sso_verify'] ?? false) ? '是' : '否')
                     ->colors([
                         'info' => true,
                         'gray' => false,
                     ]),
-                Tables\Columns\BadgeColumn::make('verify_origin')
+                TextColumn::make('verify_origin')
                     ->label('来源校验')
-                    ->formatStateUsing(fn (bool $state): string => $state ? '启用' : '关闭')
+                    ->badge()
+                    ->formatStateUsing(fn ($state): string => $state ? '启用' : '关闭')
                     ->colors([
                         'warning' => true,
                         'gray' => false,
                     ]),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('创建时间')
                     ->dateTime('Y-m-d H:i')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('更新时间')
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
@@ -277,26 +294,26 @@ class ApiAppResource extends Resource
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
+                SelectFilter::make('status')
                     ->label('状态')
                     ->options([
                         1 => '启用',
                         0 => '禁用',
                     ]),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('regenerate_secret')
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                Action::make('regenerate_secret')
                     ->label('进入详情重置 Secret')
                     ->icon('heroicon-o-arrow-path')
                     ->color('warning')
                     ->url(fn (ApiApp $record): string => static::getUrl('view', ['record' => $record])),
-                Tables\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

@@ -4,7 +4,22 @@
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D8.2-8892BF.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-10%2F11%2F12-FF2D20.svg)](https://laravel.com/)
-[![Filament](https://img.shields.io/badge/Filament-3.x-FBBC04.svg)](https://filamentphp.com/)
+[![Filament](https://img.shields.io/badge/Filament-5.x-FBBC04.svg)](https://filamentphp.com/)
+
+> **分支说明**
+>
+> | 分支 | Filament | 适用 NexusPHP |
+> |---|---|---|
+> | `main` | 3.x | 1.8 / 1.9 |
+> | **`v5`（当前分支）** | **5.x**（Livewire 4） | **1.10 及以上** |
+>
+> `v5` 分支只是把后台 UI 适配到 Filament 5 / Livewire 4，**接口契约、HMAC 签名、权限模型、
+> 数据库迁移与资产交易逻辑与 `main` 完全一致**，两者可互相切换而不影响已有数据。
+>
+> 在 Filament 5 站点上，原 `main` 分支的代码无法运行：`Filament\Forms\Form`、
+> `Filament\Forms\Components\Section|Grid`、`Filament\Tables\Actions\*`、
+> `Livewire\Mechanisms\ComponentRegistry` 均已不存在，且 `Resource::form()` 的签名、
+> `Page::$view`（v5 为实例属性）与导航属性类型都发生了变化。
 
 NexusPHP 主站开放连接插件，为第三方接入应用提供 SSO 单点登录、用户信息查询和资产交易能力。
 
@@ -106,7 +121,7 @@ php artisan db:table api_operation_logs
 
 管理后台入口：`/nexusphp/tp-open-connect`
 
-对接方案入口：`/nexusphp/tp-open-connect/integration-guide`
+对接方案入口：`/nexusphp/tp-open-connect-integration-guide`
 
 ## 卸载
 
@@ -204,7 +219,7 @@ $response = Http::withHeaders([
 $userData = $response->json()['data'];
 ```
 
-完整的对接指南请访问 `/nexusphp/tp-open-connect/integration-guide`。
+完整的对接指南请访问 `/nexusphp/tp-open-connect-integration-guide`。
 
 ## API 接口
 
@@ -240,7 +255,7 @@ $signature = hash_hmac('sha256', $payload, $appSecret);
 |---|---|---|
 | `/tp-open-connect/sso/generate` | POST | 生成 SSO 跳转 URL |
 | `/tp-open-connect/sso/generate?app_id=...` | GET | 登录后直接跳转到第三方接入应用 |
-| `/nexusphp/tp-open-connect/integration-guide` | GET | 对接方案文档页面 |
+| `/nexusphp/tp-open-connect-integration-guide` | GET | 对接方案文档页面 |
 
 ## 安全机制
 
@@ -295,7 +310,7 @@ $signature = hash_hmac('sha256', $payload, $appSecret);
 
 - [INTEGRATION.md](INTEGRATION.md) - 第三方应用对接教程
 - [TESTING.md](TESTING.md) - 测试说明
-- `/nexusphp/tp-open-connect/integration-guide` - 第三方接入应用对接完整指南
+- `/nexusphp/tp-open-connect-integration-guide` - 第三方接入应用对接完整指南
 
 ## 升级
 

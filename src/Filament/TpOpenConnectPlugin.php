@@ -5,6 +5,8 @@ namespace NexusPlugin\TpOpenConnect\Filament;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use NexusPlugin\TpOpenConnect\Filament\Pages\TpOpenConnectManagement;
+use NexusPlugin\TpOpenConnect\Filament\Resources\ApiAppResource;
+use NexusPlugin\TpOpenConnect\Filament\Resources\ApiAssetLogResource;
 
 class TpOpenConnectPlugin implements Plugin
 {
@@ -15,9 +17,14 @@ class TpOpenConnectPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        $panel->pages([
-            TpOpenConnectManagement::class,
-        ]);
+        $panel
+            ->resources([
+                ApiAppResource::class,
+                ApiAssetLogResource::class,
+            ])
+            ->pages([
+                TpOpenConnectManagement::class,
+            ]);
     }
 
     public function boot(Panel $panel): void

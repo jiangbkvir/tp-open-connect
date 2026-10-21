@@ -18,7 +18,7 @@ class ListApiApps extends ListRecords
             Actions\Action::make('integration_guide')
                 ->label('对接方案')
                 ->icon('heroicon-o-book-open')
-                ->url('/nexusphp/tp-open-connect/integration-guide')
+                ->url(route('tpoc.integration-guide'))
                 ->openUrlInNewTab(),
             Actions\Action::make('trade_logs')
                 ->label('查看交易流水')

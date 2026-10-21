@@ -1,5 +1,5 @@
 {
-    "name": "nexusphp/tp-open-connect",
+    "name": "jiangbkvir/tp-open-connect",
     "description": "SSO open connection plugin for NexusPHP with HMAC authentication and asset management",
     "type": "library",
     "license": "MIT",
@@ -13,11 +13,11 @@
         "laravel",
         "filament"
     ],
-    "homepage": "https://github.com/nexusphp/tp-open-connect",
+    "homepage": "https://github.com/jiangbkvir/tp-open-connect",
     "authors": [
         {
-            "name": "NexusPHP Team",
-            "homepage": "https://github.com/nexusphp"
+            "name": "jiangbkvir",
+            "homepage": "https://github.com/jiangbkvir"
         }
     ],
     "require": {

@@ -1,6 +1,6 @@
 # TP Open Connect
 
-[![Latest Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/nexusphp/tp-open-connect/releases)
+[![Latest Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/jiangbkvir/tp-open-connect/releases)
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D8.2-8892BF.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-10%2F11%2F12-FF2D20.svg)](https://laravel.com/)
@@ -57,7 +57,7 @@ cd /path/to/nexusphp
 
 # 方法 A：使用 Composer 本地仓库（推荐，支持自动加载）
 composer config repositories.tp-open-connect path plugins/TpOpenConnect
-composer require nexusphp/tp-open-connect:@dev
+composer require jiangbkvir/tp-open-connect:@dev
 php artisan tp-open-connect:install
 php artisan optimize:clear
 
@@ -116,7 +116,7 @@ php artisan tp-open-connect:uninstall --drop-data
 如果使用了 Composer 安装：
 
 ```bash
-composer remove nexusphp/tp-open-connect
+composer remove jiangbkvir/tp-open-connect
 ```
 
 ## 快速开始
@@ -325,11 +325,11 @@ MIT License. See [LICENSE](LICENSE).
 
 ## Security Vulnerabilities
 
-如发现安全漏洞，请发送邮件至 [security@nexusphp.com](mailto:security@nexusphp.com)，而不是创建公开 Issue。
+如发现安全漏洞，请发送邮件至 [security@github.com](mailto:security@github.com)，而不是创建公开 Issue。
 
 ## Credits
 
-- [NexusPHP Team](https://github.com/nexusphp)
+- [jiangbkvir](https://github.com/jiangbkvir)
 - [All Contributors](../../contributors)
 
 ---

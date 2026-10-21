@@ -3,10 +3,10 @@
     "name": "TP Open Connect",
     "version": "1.0.0",
     "description": "SSO 开放连接插件，提供第三方接入应用授权、API 接口和资产管理功能",
-    "author": "NexusPHP",
-    "homepage": "https://github.com/nexusphp/tp-open-connect",
+    "author": "jiangbkvir",
+    "homepage": "https://github.com/jiangbkvir/tp-open-connect",
     "license": "MIT",
-    "link": "https://github.com/nexusphp/tp-open-connect",
+    "link": "https://github.com/jiangbkvir/tp-open-connect",
     "compatible_version": "1.8.0",
     "requires": {
         "php": "^8.2",

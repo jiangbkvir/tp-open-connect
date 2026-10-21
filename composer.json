@@ -1,0 +1,48 @@
+{
+    "name": "nexusphp/tp-open-connect",
+    "description": "SSO open connection plugin for NexusPHP with HMAC authentication and asset management",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "nexusphp",
+        "sso",
+        "open-connect",
+        "api",
+        "hmac",
+        "asset-management",
+        "laravel",
+        "filament"
+    ],
+    "homepage": "https://github.com/nexusphp/tp-open-connect",
+    "authors": [
+        {
+            "name": "NexusPHP Team",
+            "homepage": "https://github.com/nexusphp"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0",
+        "ext-json": "*",
+        "ext-bcmath": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "NexusPlugin\\TpOpenConnect\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NexusPlugin\\TpOpenConnect\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NexusPlugin\\TpOpenConnect\\TpOpenConnectServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
